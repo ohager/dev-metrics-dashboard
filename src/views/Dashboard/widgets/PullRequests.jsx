@@ -6,35 +6,7 @@ import CardFooter from "components/Card/CardFooter.jsx";
 import Icon from "@material-ui/core/Icon";
 import Warning from "@material-ui/core/SvgIcon/SvgIcon";
 import Danger from "components/Typography/Danger.jsx";
-
-import { parse, addDays, isWithinRange } from "date-fns";
-
-function getPullRequestsStats(pullRequests) {
-  const PERIOD_DAYS = 7;
-  let minDate = parse(pullRequests.nodes[0].createdAt);
-  let targetDate = addDays(minDate, PERIOD_DAYS);
-
-  let pullRequestsLastSevenDays = pullRequests.nodes.filter(pr =>
-    isWithinRange(pr.createdAt, minDate, targetDate)
-  );
-  const prCount = pullRequestsLastSevenDays.length;
-
-  let stats = {
-    startDate: minDate,
-    lastDate: pullRequestsLastSevenDays[prCount - 1],
-    period: `Last ${PERIOD_DAYS} days`,
-    total: prCount,
-    closed: 0
-  };
-
-  pullRequestsLastSevenDays.forEach(pr => {
-    if (pr.mergedAt) {
-      stats.closed += 1;
-    }
-  });
-
-  return stats;
-}
+import { getPullRequestsStats } from "./pullRequestsUtils";
 
 const PullRequests = ({ classes, pullRequests }) => {
   const stats = getPullRequestsStats(pullRequests);
