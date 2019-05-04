@@ -27,7 +27,7 @@ const PullRequests = ({ classes, pullRequests }) => {
           {stats.period}
         </div>
         <div className={classes.stats} >
-          Oldest Open {stats.oldestOpen}
+          Oldest Open PR is from {stats.oldestOpen}
         </div>
       </CardFooter>
     </Card>

@@ -4,7 +4,6 @@ import {
   differenceInHours,
   format,
   isWithinRange,
-  min,
   parse
 } from "date-fns";
 import { PULL_REQUESTS_PERIOD_DAYS } from "../../../constants";
@@ -12,7 +11,9 @@ import { PULL_REQUESTS_PERIOD_DAYS } from "../../../constants";
 const extract = pullRequests =>
   pullRequests.nodes ? pullRequests.nodes : pullRequests;
 
-const isOpen = pullRequest => pullRequest.closedAt === null;
+export const isOpen = pullRequest => pullRequest.closedAt === null;
+export const isMerged = pullRequest => pullRequest.mergedAt !== null;
+export const isNotClosedWithoutMerge = pullRequest => isMerged(pullRequest) || (isOpen(pullRequest) && !isMerged(pullRequest))
 
 const getNewestPullRequest = pullRequests =>
   pullRequests[pullRequests.length - 1];
@@ -27,6 +28,7 @@ function _getFromLastDays(pullRequests, numberOfDays) {
     .filter(pr =>
       isWithinRange(pr.createdAt, oldestAcceptableDate, mostRecentDate)
     )
+    .filter(isNotClosedWithoutMerge)
     .sortBy("createdAt")
     .value();
 }
@@ -51,11 +53,16 @@ function _getPullRequestsStats(pullRequests) {
 
 function _groupByDate(pullRequests) {
   const prs = extract(pullRequests);
-  const mapped = prs.map(pr => ({
-    ...pr,
-    mergedAtFormatted: isOpen(pr) ? "open" : format(pr.mergedAt, "MMM Do"),
-    duration: isOpen(pr) ? "open" : differenceInHours(pr.mergedAt, pr.createdAt)
-  }));
+  const mapped = _.chain(prs)
+    .filter(isNotClosedWithoutMerge)
+    .map(pr => ({
+      ...pr,
+      mergedAtFormatted: isOpen(pr) ? "open" : format(pr.mergedAt, "MMM Do"),
+      duration: isOpen(pr)
+        ? "open"
+        : differenceInHours(pr.mergedAt, pr.createdAt)
+    }))
+    .value();
   return _.groupBy(mapped, "mergedAtFormatted");
 }
 

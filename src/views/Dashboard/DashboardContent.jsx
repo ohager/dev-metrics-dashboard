@@ -54,7 +54,7 @@ class DashboardContent extends React.Component {
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
+          <GridItem xs={12} sm={6} md={6}>
             <PullRequests
               classes={classes}
               pullRequests={repository.pullRequests}
@@ -79,12 +79,12 @@ class DashboardContent extends React.Component {
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
+          <GridItem xs={12} sm={12} md={6}>
             <PullRequestsChart
               classes={classes}
               pullRequests={repository.pullRequests} />
           </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
+          <GridItem xs={12} sm={12} md={6}>
             <Card chart>
               <CardHeader color="danger">
                 <ChartistGraph

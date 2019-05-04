@@ -1,27 +1,26 @@
+import max from 'lodash/max'
+import {groupByDate, isNotClosedWithoutMerge} from "./pullRequestsUtils";
+
 const delays2 = 80,
   durations2 = 500;
 
 function createPullRequestsChartConfig(pullRequests) {
-  // TODO: group by date and count pull requests
+
+  const groupedByDate = groupByDate(pullRequests);
+  const groups = Object.keys(groupedByDate);
+  const labels = groups;
+  const series = groups.map(g => groupedByDate[g].length);
   const chartConfig = {
     data: {
-      labels: [
-        "Day 1",
-        "Day 2",
-        "Day 3",
-        "Day 4",
-        "Day 5",
-        "Day 6",
-        "Day 7"
-      ],
-      series: [[4, 7, 4, 5, 8, 2, 6]]
+      labels,
+      series: [series]
     },
     options: {
       axisX: {
         showGrid: false
       },
       low: 0,
-      high: 20,
+      high: max(series),
       chartPadding: {
         top: 0,
         right: 5,

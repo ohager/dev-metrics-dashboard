@@ -34,10 +34,16 @@ const dashboardStyle = {
       marginLeft: "3px"
     }
   },
+  cardInline: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
   cardCategory: {
     color: grayColor[0],
     margin: "0",
-    fontSize: "14px",
+    fontSize: "16px",
+    fontWeight: "bold",
     marginTop: "0",
     paddingTop: "10px",
     marginBottom: "0"
