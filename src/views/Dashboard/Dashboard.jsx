@@ -1,11 +1,27 @@
 import React from "react";
 import graphql from "babel-plugin-relay/macro";
-import {QueryRenderer} from "react-relay";
-import environment from "../../createRelayEnvironment";
+import { QueryRenderer } from "react-relay";
+import environment from "createRelayEnvironment";
+import {PULL_REQUESTS_FETCH_COUNT, POLLING_INTERVAL} from "../../constants";
 import DashboardContent from "./DashboardContent";
 
+const query = graphql`
+  query DashboardQuery($prCount: Int!) {
+    repository(owner: "holding-digital", name: "livia-web") {
+      pullRequests(last: $prCount) {
+        nodes {
+          number
+          createdAt
+          mergedAt
+          closedAt
+        }
+      }
+    }
+  }
+`;
+
 // eslint-disable-next-line react/prop-types
-const renderQuery = ({error, props}) => {
+const renderQuery = ({ error, props }) => {
   if (error) {
     return <div>{error.message}</div>;
   } else if (props) {
@@ -18,24 +34,12 @@ const DashboardQuery = () => {
   return (
     <QueryRenderer
       environment={environment}
-      query={graphql`
-        query DashboardQuery($prCount: Int!) {
-          repository(owner: "holding-digital", name: "livia-web") {
-            pullRequests(last: $prCount) {
-              nodes {
-                number
-                createdAt
-                mergedAt
-              }
-            }
-          }
-        }
-      `}
+      query={query}
       variables={{
-        prCount: 50
+        prCount: PULL_REQUESTS_FETCH_COUNT
       }}
       cacheConfig={{
-        poll: 60 * 1000
+        poll: POLLING_INTERVAL
       }}
       render={renderQuery}
     />

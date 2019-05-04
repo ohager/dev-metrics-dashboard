@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 68cdd51ea50dcc2aa7471591a1f5911b
+ * @relayHash 864e69d360852e74675b44e10ea46cb2
  */
 
 /* eslint-disable */
@@ -19,6 +19,7 @@ export type DashboardQueryResponse = {|
         +number: number,
         +createdAt: any,
         +mergedAt: ?any,
+        +closedAt: ?any,
       |}>
     |}
   |}
@@ -40,6 +41,7 @@ query DashboardQuery(
         number
         createdAt
         mergedAt
+        closedAt
         id
       }
     }
@@ -100,6 +102,13 @@ v5 = {
 v6 = {
   "kind": "ScalarField",
   "alias": null,
+  "name": "closedAt",
+  "args": null,
+  "storageKey": null
+},
+v7 = {
+  "kind": "ScalarField",
+  "alias": null,
   "name": "id",
   "args": null,
   "storageKey": null
@@ -142,7 +151,8 @@ return {
                 "selections": [
                   (v3/*: any*/),
                   (v4/*: any*/),
-                  (v5/*: any*/)
+                  (v5/*: any*/),
+                  (v6/*: any*/)
                 ]
               }
             ]
@@ -186,12 +196,13 @@ return {
                   (v3/*: any*/),
                   (v4/*: any*/),
                   (v5/*: any*/),
-                  (v6/*: any*/)
+                  (v6/*: any*/),
+                  (v7/*: any*/)
                 ]
               }
             ]
           },
-          (v6/*: any*/)
+          (v7/*: any*/)
         ]
       }
     ]
@@ -200,11 +211,11 @@ return {
     "operationKind": "query",
     "name": "DashboardQuery",
     "id": null,
-    "text": "query DashboardQuery(\n  $prCount: Int!\n) {\n  repository(owner: \"holding-digital\", name: \"livia-web\") {\n    pullRequests(last: $prCount) {\n      nodes {\n        number\n        createdAt\n        mergedAt\n        id\n      }\n    }\n    id\n  }\n}\n",
+    "text": "query DashboardQuery(\n  $prCount: Int!\n) {\n  repository(owner: \"holding-digital\", name: \"livia-web\") {\n    pullRequests(last: $prCount) {\n      nodes {\n        number\n        createdAt\n        mergedAt\n        closedAt\n        id\n      }\n    }\n    id\n  }\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '10ea7c0fd2594dab0f4f36751fee388d';
+(node/*: any*/).hash = 'b70ad63af53736128481129dcc4accd7';
 module.exports = node;

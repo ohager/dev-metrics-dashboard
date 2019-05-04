@@ -23,11 +23,11 @@ const PullRequests = ({ classes, pullRequests }) => {
         </h3>
       </CardHeader>
       <CardFooter stats>
-        <div className={classes.stats}>
-          <Danger>
-            <Warning />
-          </Danger>
+        <div className={classes.stats} >
           {stats.period}
+        </div>
+        <div className={classes.stats} >
+          Oldest Open {stats.oldestOpen}
         </div>
       </CardFooter>
     </Card>
